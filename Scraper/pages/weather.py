@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 headers = {'User-Agent': 'Mozilla/5.0'}
 
+# List of areas with their corresponding IDs
 areas = [
     'blagoevgrad/43813',
     'burgas/47424',
@@ -35,12 +36,17 @@ areas = [
 ]
 
 def parse_soup(url):
+    """
+    Sends a GET request to the given URL and returns a BeautifulSoup object.
+    """
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
-
     return soup
 
 def get_temp_by_area(index):
+    """
+    Retrieves the temperature for a specific area using its index in the 'areas' list.
+    """
     area_id = areas[index].split('/')[1]
     formatted_url = f'https://www.accuweather.com/en/bg/{areas[index]}/afternoon-weather-forecast/{area_id}'
 
@@ -51,6 +57,9 @@ def get_temp_by_area(index):
     return temperature.strip()[:-1]
 
 def get_humidity_by_area(index):
+    """
+    Retrieves the humidity for a specific area using its index in the 'areas' list.
+    """
     area_id = areas[index].split('/')[1]
     formatted_url = f'https://www.accuweather.com/en/bg/{areas[index]}/afternoon-weather-forecast/{area_id}'
 
@@ -62,6 +71,9 @@ def get_humidity_by_area(index):
     return humidity[:-1]
 
 def get_aq_by_area(index):
+    """
+    Retrieves the air quality for a specific area using its index in the 'areas' list.
+    """
     area_id = areas[index].split('/')[1]
     formatted_url = f'https://www.accuweather.com/en/bg/{areas[index]}/weather-forecast/{area_id}'
 
@@ -72,10 +84,19 @@ def get_aq_by_area(index):
     return aq.strip()
 
 def get_temperatures():
+    """
+    Retrieves the temperatures for all areas and returns them as a list.
+    """
     return [get_temp_by_area(i) for i in range(len(areas))]
 
 def get_humidities():
+    """
+    Retrieves the humidities for all areas and returns them as a list.
+    """
     return [get_humidity_by_area(i) for i in range(len(areas))]
 
 def get_aq():
+    """
+    Retrieves the air qualities for all areas and returns them as a list.
+    """
     return [get_aq_by_area(i) for i in range(len(areas))]
